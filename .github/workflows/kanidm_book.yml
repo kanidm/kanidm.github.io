@@ -27,7 +27,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    if: ${{ github.ref == 'refs/heads/main' && github.repository == 'kanidm/kanidm' }}
+    if: ${{ github.ref == 'refs/heads/main' && github.repository == 'kanidm/kanidm.github.io' }}
     runs-on: ubuntu-latest
     steps:
       - name: Setup Pages
