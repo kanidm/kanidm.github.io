@@ -1,0 +1,42 @@
+---
+name: GitHub Pages
+
+"on":
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+# permissions list: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+permissions:
+  id-token: write
+  actions: read
+  checks: read
+  contents: write
+  deployments: write
+  issues: read
+  pull-requests: read
+  statuses: read
+  pages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    if: ${{ github.ref == 'refs/heads/main' && github.repository == 'kanidm/kanidm' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: 'site/'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
